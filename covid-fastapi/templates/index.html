@@ -47,8 +47,8 @@
 
     <h3> Image File Name: {{filename}} </h3>
 
-       {% if confidence < 55  %}
-          <img src="{{ url_for('static', path='Image_Prediction.png') }}" width="80%">
+       {% if confidence < 150  %}
+          <img src="{{ xray_image }}" width="80%">
        {% else %}          
 	   <div class="row">  
          <div class="column">

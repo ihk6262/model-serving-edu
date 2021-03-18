@@ -287,7 +287,7 @@ async def read_item(request: Request, id: str = "123"):
 @app.get("/")
 async def hello_world(request: Request):
 	#return render_template('index.html', prediction='INCONCLUSIVE', confidence=0, filename='no image')
-    return templates.TemplateResponse("index.html", {"request": request, "prediction": "INCONCLUSIVE", "confidence": 0, "filename": "no image"})
+    return templates.TemplateResponse("index.html", {"request": request, "prediction": "INCONCLUSIVE", "confidence": 0, "filename": "no image", "xray_image": "static/Image_Prediction.png"})
 
 # Service healthchecks
 @app.get("/covid19/api/v1/healthcheck")
@@ -402,7 +402,7 @@ def covid_classifier_model2(img_path, filename):
     #MODEL2_API_URL is tensorflow serving URL in another docker
     HEADERS = {'content-type': 'application/json', 
                 'Host': 'covid-19.myspace.example.com'}
-    #MODEL2_API_URL = 'http://34.69.120.166/:8511/v1/models/covid19/versions/1:predict'
+    #MODEL2_API_URL = 'http://34.69.120.166:8511/v1/models/covid19/versions/1:predict'
     MODEL2_API_URL = 'http://34.69.120.166:32380/v1/models/covid-19:predict'
     CLASS_NAMES = ['Covid19', 'Normal_Lung', 'Pneumonia_Bacterial_Lung']
 
