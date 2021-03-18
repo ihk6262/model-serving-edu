@@ -235,9 +235,16 @@ def query():
 
             # detection covid
             try:
-                # prediction, prob, img_pred_name = test_rx_image_for_Covid19(covid_pneumo_model, img_path, filename)
+                prediction, prob, img_pred_name = test_rx_image_for_Covid19(covid_pneumo_model, img_path, filename)
+                # jupyter notebook 에 있는것과 동일한 방식
+                # 판단모델을 포함하고 있음. 모델이 변경되면 재 배포가 필요.
+
                 # prediction, prob, img_pred_name = covid_classifier_model2(img_path, filename)
-                prediction, prob, img_pred_name = generate_gradcam_heatmap(covid_pneumo_model, img_path, filename)
+                # 텐서플로우로 서빙하는 로직이 있음.
+            
+                # prediction, prob, img_pred_name = generate_gradcam_heatmap(covid_pneumo_model, img_path, filename)
+                # 색을 변경해 주는 로직이 있음.
+
                 output_path = os.path.join(app.config['OUTPUT_FOLDER'], img_pred_name)
                 return render_template('index.html', prediction=prediction, confidence=prob, filename=image_name, xray_image=img_path, xray_image_with_heatmap=output_path)
             except Exception as e:
@@ -277,7 +284,7 @@ def covid_classifier_model2(img_path, filename):
 
     #MODEL2_API_URL is tensorflow serving URL in another docker
     HEADERS = {'content-type': 'application/json'}
-    MODEL2_API_URL = 'http://127.0.0.1:8511/v1/models/covid19/versions/1:predict'
+    MODEL2_API_URL = 'http://34.69.120.166:8511/v1/models/covid19/versions/1:predict'
     CLASS_NAMES = ['Covid19', 'Normal_Lung', 'Pneumonia_Bacterial_Lung']
 
     logging.warning("****** Tenserflow Serving Request  *****")

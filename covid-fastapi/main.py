@@ -199,7 +199,7 @@ def generate_gradcam_heatmap(model, imagePath, filename):
     logging.warning(np.argmax(preds, axis=1)[0])
     logging.warning(pred_pos)
 
-    if (np.argmax(preds, axis=1)[0] == 0) and (pred_pos > 65):
+    if (np.argmax(preds, axis=1)[0] == 0) and (pred_pos > 55):
         prediction = 'Covid-19 POSITIVE'
         file_pred = 'Covid19'
         prob = pred_pos
@@ -214,13 +214,15 @@ def generate_gradcam_heatmap(model, imagePath, filename):
 
 
     img_pred_name =  file_pred + '_' + str(prob) + '_' + filename +'.png'
-    if (np.argmax(preds, axis=1)[0] == 0) and (pred_pos > 65):
+    if (np.argmax(preds, axis=1)[0] == 0) and (pred_pos > 55):
+        logging.warning("PASS HEAR!!!!!!!!")
         cv2.imwrite('static/result/'+img_pred_name, imageY )
     else:
+        logging.warning("OPPS!!!!!!!!")
         cv2.imwrite('static/result/'+img_pred_name, orignal )
 
     cv2.imwrite('static/Image_Prediction.png', orignal )
-    print
+    # print
 
     return prediction, prob, img_pred_name
 
@@ -345,9 +347,14 @@ async def query(request: Request, file: UploadFile = File(...)):
             try:
                 # prediction, prob, img_pred_name = test_rx_image_for_Covid19(covid_pneumo_model, img_path, filename)
                 prediction, prob, img_pred_name = covid_classifier_model2(img_path, filename)
-                #prediction, prob, img_pred_name = generate_gradcam_heatmap(covid_pneumo_model, img_path, filename)
+                # prediction, prob, img_pred_name = generate_gradcam_heatmap(covid_pneumo_model, img_path, filename)
                 output_path = os.path.join(OUTPUT_FOLDER, img_pred_name)
                 #return render_template('index.html', prediction=prediction, confidence=prob, filename=image_name, xray_image=img_path, xray_image_with_heatmap=output_path)
+
+                logging.warning("****** path TEST  *****")
+                logging.warning(img_path)
+                logging.warning(output_path)
+
                 return templates.TemplateResponse("index.html", {"request": request, "prediction": prediction, "confidence": prob, "filename": image_name, "xray_image": img_path, "xray_image_with_heatmap": output_path })
 
             except Exception as e:
@@ -394,9 +401,9 @@ def covid_classifier_model2(img_path, filename):
 
     #MODEL2_API_URL is tensorflow serving URL in another docker
     HEADERS = {'content-type': 'application/json', 
-                'Host': 'covid19.myspace.example.com'}
-    #MODEL2_API_URL = 'http://127.0.0.1:8511/v1/models/covid19/versions/1:predict'
-    MODEL2_API_URL = 'http://34.70.85.251:32380/v1/models/covid19:predict'
+                'Host': 'covid-19.myspace.example.com'}
+    #MODEL2_API_URL = 'http://34.69.120.166/:8511/v1/models/covid19/versions/1:predict'
+    MODEL2_API_URL = 'http://34.69.120.166:32380/v1/models/covid-19:predict'
     CLASS_NAMES = ['Covid19', 'Normal_Lung', 'Pneumonia_Bacterial_Lung']
 
     logging.warning("****** Tenserflow Serving Request  *****")

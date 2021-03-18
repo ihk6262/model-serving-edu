@@ -47,17 +47,17 @@
 
     <h3> Image File Name: {{filename}} </h3>
 
-       {% if confidence < 65  %}
+       {% if confidence < 55  %}
           <img src="{{ url_for('static', path='Image_Prediction.png') }}" width="80%">
        {% else %}          
-	  <div class="row">  
-               <div class="column">
-                    <img src="{{ xray_image }}", alt="Raw Image", style="width:100%">
-	       </div>		
-               <div class="column">
-                    <img src="{{ xray_image_with_heatmap }}", alt="AI Marked Image", style="width:100%">
-	       </div>
-          </div>
+	   <div class="row">  
+         <div class="column">
+           <img src="{{ xray_image }}", alt="Raw Image", style="width:100%">
+	      </div>		
+         <div class="column">
+            <img src="{{ xray_image_with_heatmap }}", alt="AI Marked Image", style="width:100%">
+	      </div>
+      </div>
 	{% endif %}
    
      <p> @2020 AI demo service for Covid-19 Classification</p>

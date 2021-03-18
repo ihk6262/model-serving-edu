@@ -1,0 +1,24 @@
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: myspace-ingress
+  namespace: myspace
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /
+        backend:
+          serviceName: covid-fastapi
+          servicePort: 8051
+      - path: /query
+        backend:
+          serviceName: covid-fastapi
+          servicePort: 8051
+      - path: /covid19
+        backend:
+          serviceName: covid-fastapi
+          servicePort: 8051
